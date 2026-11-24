@@ -48,6 +48,7 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
+      gap: 8px;
     }
 
     header h1 {
@@ -57,13 +58,26 @@
       letter-spacing: -0.5px;
     }
 
-    .month-badge {
+    .month-picker-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
       background: #e5e5ea;
       padding: 6px 12px;
       border-radius: 20px;
       font-size: 13px;
       font-weight: 600;
       color: #3a3a3c;
+      gap: 4px;
+    }
+
+    .month-input-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
     }
 
     .card {
@@ -146,6 +160,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .edit-limits-btn {
+      background: #f2f2f7;
+      color: var(--primary);
+      border: none;
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     .cat-item {
@@ -319,6 +344,8 @@
       background: var(--card);
       width: 100%;
       max-width: 430px;
+      max-height: 88vh;
+      overflow-y: auto;
       border-radius: 22px 22px 0 0;
       padding: 20px 18px calc(var(--safe-bottom) + 20px);
       animation: slideUp 0.22s ease-out;
@@ -417,13 +444,17 @@
   <div class="container">
     <header>
       <h1>Mis Finanzas</h1>
-      <span class="month-badge" id="currentMonth"></span>
+      <div class="month-picker-wrap" title="Toca para cambiar de mes">
+        <span id="currentMonthLabel"></span>
+        <span>▾</span>
+        <input type="month" id="monthPicker" class="month-input-overlay" onchange="changeMonth(this.value)" />
+      </div>
     </header>
 
     <div class="card hero-balance">
       <div class="hero-top">
         <div>
-          <div class="hero-label">Disponible del presupuesto</div>
+          <div class="hero-label">Disponible del mes</div>
           <div class="hero-amount" id="availableAmount">$1,200.00</div>
         </div>
         <button class="edit-income-btn" onclick="openIncomeModal()">✏️ Ingreso base</button>
@@ -447,14 +478,14 @@
     <div class="card">
       <div class="section-title">
         <span>Límites por categoría</span>
-        <span style="font-size:12px;color:var(--subtext);font-weight:500;">Topes mensuales</span>
+        <button class="edit-limits-btn" onclick="openLimitsModal()">✏️ Editar topes</button>
       </div>
       <div id="categoriesContainer"></div>
     </div>
 
     <div class="card">
       <div class="section-title">
-        <span>Movimientos recientes</span>
+        <span>Movimientos del mes</span>
       </div>
       <div class="tx-list" id="txList"></div>
     </div>
@@ -490,13 +521,7 @@
 
         <div class="form-group" id="categoryGroup">
           <label>Categoría</label>
-          <select id="categoryInput" class="form-control">
-            <option value="housing">🏠 Vivienda y servicios ($363)</option>
-            <option value="groceries">🛒 Alimentación y súper ($226)</option>
-            <option value="transport">🚕 Transporte y movilidad ($53)</option>
-            <option value="dining">🍔 Salidas, entregas y ocio ($246)</option>
-            <option value="debt">💳 Cuotas de deuda / tarjetas ($118)</option>
-          </select>
+          <select id="categoryInput" class="form-control"></select>
         </div>
 
         <div class="form-group">
@@ -513,18 +538,34 @@
   <div class="modal-backdrop" id="incomeModalBackdrop" onclick="closeIncomeModalOnBackdrop(event)">
     <div class="modal-sheet">
       <div class="modal-header">
-        <h2>Configurar ingreso mensual</h2>
+        <h2>Ingreso mensual</h2>
         <button class="close-btn" onclick="closeIncomeModal()">✕</button>
       </div>
 
       <form onsubmit="saveBaseIncome(event)">
         <div class="form-group">
-          <label>Tu ingreso fijo mensual ($)</label>
+          <label>Ingreso fijo del mes seleccionado ($)</label>
           <input type="number" inputmode="decimal" step="0.01" min="0" id="baseIncomeInput" class="form-control" placeholder="1200.00" required />
-          <div class="helper-text">Este valor se guarda en tu teléfono y recalcula automáticamente tu disponible y tu meta de ahorro mensual.</div>
+          <div class="helper-text">Aplica al mes activo y actualiza tu disponible y meta de ahorro.</div>
         </div>
 
         <button type="submit" class="fab-btn" style="margin-top:6px;">Actualizar ingreso</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Editar Topes por Categoría -->
+  <div class="modal-backdrop" id="limitsModalBackdrop" onclick="closeLimitsModalOnBackdrop(event)">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2>Topes por categoría</h2>
+        <button class="close-btn" onclick="closeLimitsModal()">✕</button>
+      </div>
+
+      <form onsubmit="saveLimits(event)">
+        <div id="limitsFieldsContainer"></div>
+        <div class="helper-text">Define el límite máximo mensual ($) para cada apartado.</div>
+        <button type="submit" class="fab-btn" style="margin-top:12px;">Guardar topes</button>
       </form>
     </div>
   </div>
@@ -538,23 +579,86 @@
       { id: 'debt', name: 'Cuotas de deuda / tarjetas', icon: '💳', limit: 118 }
     ];
 
-    const STORAGE_KEY = 'mis_finanzas_iphone_v1';
+    const STORAGE_KEY = 'mis_finanzas_iphone_v2';
 
-    let saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    function getCurrentYYYYMM() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      return `${y}-${m}`;
+    }
+
+    function createMonthRecord(prevRecord) {
+      const limits = {};
+      DEFAULT_CATEGORIES.forEach(c => {
+        limits[c.id] = prevRecord && prevRecord.limits && typeof prevRecord.limits[c.id] === 'number'
+          ? prevRecord.limits[c.id]
+          : c.limit;
+      });
+      return {
+        baseIncome: prevRecord && typeof prevRecord.baseIncome === 'number' ? prevRecord.baseIncome : 1200,
+        limits,
+        transactions: []
+      };
+    }
+
+    let rawSaved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
     let state = {
-      baseIncome: typeof saved.baseIncome === 'number' ? saved.baseIncome : 1200,
-      transactions: Array.isArray(saved.transactions) ? saved.transactions : []
+      selectedMonth: rawSaved.selectedMonth || getCurrentYYYYMM(),
+      months: rawSaved.months && typeof rawSaved.months === 'object' ? rawSaved.months : {}
     };
 
+    if (!state.months[state.selectedMonth]) {
+      state.months[state.selectedMonth] = createMonthRecord(null);
+    }
+
     let currentType = 'expense';
+
+    function getActiveMonthData() {
+      if (!state.months[state.selectedMonth]) {
+        const keys = Object.keys(state.months).sort();
+        const lastKey = keys[keys.length - 1];
+        state.months[state.selectedMonth] = createMonthRecord(lastKey ? state.months[lastKey] : null);
+      }
+      return state.months[state.selectedMonth];
+    }
+
+    function getCategoryLimit(cat) {
+      const mData = getActiveMonthData();
+      if (mData.limits && typeof mData.limits[cat.id] === 'number') {
+        return mData.limits[cat.id];
+      }
+      return cat.limit;
+    }
 
     function formatMoney(num) {
       return '$' + Number(num).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
+    function formatMonthTitle(yyyymm) {
+      const [y, m] = yyyymm.split('-').map(Number);
+      const d = new Date(y, (m || 1) - 1, 1);
+      return d.toLocaleDateString('es-EC', { month: 'long', year: 'numeric' });
+    }
+
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       render();
+    }
+
+    function changeMonth(newYYYYMM) {
+      if (!newYYYYMM) return;
+      state.selectedMonth = newYYYYMM;
+      getActiveMonthData();
+      saveState();
+    }
+
+    function populateCategorySelect() {
+      const select = document.getElementById('categoryInput');
+      select.innerHTML = DEFAULT_CATEGORIES.map(cat => {
+        const lim = getCategoryLimit(cat);
+        return `<option value="${cat.id}">${cat.icon} ${cat.name} (${formatMoney(lim)})</option>`;
+      }).join('');
     }
 
     function setType(type) {
@@ -565,6 +669,7 @@
     }
 
     function openModal() {
+      populateCategorySelect();
       document.getElementById('modalBackdrop').classList.add('active');
       setTimeout(() => document.getElementById('amountInput').focus(), 100);
     }
@@ -581,7 +686,8 @@
     }
 
     function openIncomeModal() {
-      document.getElementById('baseIncomeInput').value = state.baseIncome;
+      const mData = getActiveMonthData();
+      document.getElementById('baseIncomeInput').value = mData.baseIncome;
       document.getElementById('incomeModalBackdrop').classList.add('active');
       setTimeout(() => {
         const input = document.getElementById('baseIncomeInput');
@@ -602,9 +708,46 @@
       e.preventDefault();
       const val = parseFloat(document.getElementById('baseIncomeInput').value);
       if (isNaN(val) || val < 0) return;
-      state.baseIncome = val;
+      getActiveMonthData().baseIncome = val;
       saveState();
       closeIncomeModal();
+    }
+
+    function openLimitsModal() {
+      const container = document.getElementById('limitsFieldsContainer');
+      container.innerHTML = DEFAULT_CATEGORIES.map(cat => {
+        const currentLim = getCategoryLimit(cat);
+        return `
+          <div class="form-group">
+            <label>${cat.icon} ${cat.name} ($)</label>
+            <input type="number" inputmode="decimal" step="0.01" min="0" data-cat-id="${cat.id}" class="form-control limit-input" value="${currentLim}" required />
+          </div>
+        `;
+      }).join('');
+      document.getElementById('limitsModalBackdrop').classList.add('active');
+    }
+
+    function closeLimitsModal() {
+      document.getElementById('limitsModalBackdrop').classList.remove('active');
+    }
+
+    function closeLimitsModalOnBackdrop(e) {
+      if (e.target.id === 'limitsModalBackdrop') closeLimitsModal();
+    }
+
+    function saveLimits(e) {
+      e.preventDefault();
+      const mData = getActiveMonthData();
+      if (!mData.limits) mData.limits = {};
+      document.querySelectorAll('.limit-input').forEach(inp => {
+        const id = inp.getAttribute('data-cat-id');
+        const val = parseFloat(inp.value);
+        if (!isNaN(val) && val >= 0) {
+          mData.limits[id] = val;
+        }
+      });
+      saveState();
+      closeLimitsModal();
     }
 
     function saveTransaction(e) {
@@ -615,7 +758,8 @@
 
       if (!amount || amount <= 0 || !note) return;
 
-      state.transactions.unshift({
+      const mData = getActiveMonthData();
+      mData.transactions.unshift({
         id: Date.now(),
         type: currentType,
         amount,
@@ -629,52 +773,55 @@
     }
 
     function deleteTransaction(id) {
-      state.transactions = state.transactions.filter(t => t.id !== id);
+      const mData = getActiveMonthData();
+      mData.transactions = mData.transactions.filter(t => t.id !== id);
       saveState();
     }
 
     function resetMonth() {
-      if (confirm('¿Seguro que deseas borrar todos los movimientos del mes y reiniciar en cero? (Tu ingreso mensual configurado se mantendrá)')) {
-        state.transactions = [];
+      if (confirm('¿Seguro que deseas borrar los movimientos del mes seleccionado? (Se conservan tu ingreso y topes)')) {
+        getActiveMonthData().transactions = [];
         saveState();
       }
     }
 
     function exportCSV() {
-      if (state.transactions.length === 0) {
-        alert('Aún no hay movimientos registrados para exportar.');
+      const mData = getActiveMonthData();
+      if (mData.transactions.length === 0) {
+        alert('No hay movimientos registrados en este mes para exportar.');
         return;
       }
-      const headers = ['Fecha,Tipo,Categoria,Descripcion,Monto'];
-      const rows = state.transactions.map(t => {
+      const headers = ['Mes,Fecha,Tipo,Categoria,Descripcion,Monto'];
+      const rows = mData.transactions.map(t => {
         const catObj = DEFAULT_CATEGORIES.find(c => c.id === t.category);
         const catName = t.type === 'income' ? 'Ingreso' : (catObj ? catObj.name : t.category);
-        return `"${t.date}","${t.type === 'income' ? 'Ingreso' : 'Gasto'}","${catName}","${t.note.replace(/"/g, '""')}",${t.amount}`;
+        return `"${state.selectedMonth}","${t.date}","${t.type === 'income' ? 'Ingreso' : 'Gasto'}","${catName}","${t.note.replace(/"/g, '""')}",${t.amount}`;
       });
       const blob = new Blob([headers.concat(rows).join('\n')], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'mis_finanzas.csv';
+      a.download = `mis_finanzas_${state.selectedMonth}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     }
 
     function render() {
-      const now = new Date();
-      document.getElementById('currentMonth').textContent = now.toLocaleDateString('es-EC', { month: 'long', year: 'numeric' });
+      document.getElementById('monthPicker').value = state.selectedMonth;
+      document.getElementById('currentMonthLabel').textContent = formatMonthTitle(state.selectedMonth);
 
-      const extraIncome = state.transactions
+      const mData = getActiveMonthData();
+      const extraIncome = mData.transactions
         .filter(t => t.type === 'income')
         .reduce((sum, t) => sum + t.amount, 0);
 
-      const totalExpenses = state.transactions
+      const totalExpenses = mData.transactions
         .filter(t => t.type === 'expense')
         .reduce((sum, t) => sum + t.amount, 0);
 
-      const totalIncome = state.baseIncome + extraIncome;
+      const totalIncome = mData.baseIncome + extraIncome;
       const available = totalIncome - totalExpenses;
-      const totalBudgetedExpenses = DEFAULT_CATEGORIES.reduce((sum, c) => sum + c.limit, 0);
+      const totalBudgetedExpenses = DEFAULT_CATEGORIES.reduce((sum, c) => sum + getCategoryLimit(c), 0);
       const savingsGoal = Math.max(0, totalIncome - totalBudgetedExpenses);
 
       document.getElementById('totalIncome').textContent = formatMoney(totalIncome);
@@ -688,10 +835,11 @@
       // Categorías
       const catContainer = document.getElementById('categoriesContainer');
       catContainer.innerHTML = DEFAULT_CATEGORIES.map(cat => {
-        const spent = state.transactions
+        const limit = getCategoryLimit(cat);
+        const spent = mData.transactions
           .filter(t => t.type === 'expense' && t.category === cat.id)
           .reduce((sum, t) => sum + t.amount, 0);
-        const pct = Math.min(100, Math.round((spent / cat.limit) * 100));
+        const pct = limit > 0 ? Math.min(100, Math.round((spent / limit) * 100)) : (spent > 0 ? 100 : 0);
         let barColor = 'var(--green)';
         if (pct >= 100) barColor = 'var(--red)';
         else if (pct >= 80) barColor = 'var(--orange)';
@@ -700,7 +848,7 @@
           <div class="cat-item">
             <div class="cat-header">
               <span class="cat-name">${cat.icon} ${cat.name}</span>
-              <span class="cat-values"><strong>${formatMoney(spent)}</strong> / ${formatMoney(cat.limit)}</span>
+              <span class="cat-values"><strong>${formatMoney(spent)}</strong> / ${formatMoney(limit)}</span>
             </div>
             <div class="progress-bg">
               <div class="progress-fill" style="width:${pct}%; background:${barColor};"></div>
@@ -711,10 +859,10 @@
 
       // Movimientos
       const txList = document.getElementById('txList');
-      if (state.transactions.length === 0) {
-        txList.innerHTML = '<div class="empty-state">Aún no hay gastos ni ingresos registrados este mes.<br>Toca <strong>+ Registrar movimiento</strong> para empezar.</div>';
+      if (mData.transactions.length === 0) {
+        txList.innerHTML = '<div class="empty-state">No hay movimientos en este mes.<br>Toca <strong>+ Registrar movimiento</strong> para empezar.</div>';
       } else {
-        txList.innerHTML = state.transactions.map(t => {
+        txList.innerHTML = mData.transactions.map(t => {
           const catObj = DEFAULT_CATEGORIES.find(c => c.id === t.category);
           const icon = t.type === 'income' ? '💰' : (catObj ? catObj.icon : '💸');
           const catLabel = t.type === 'income' ? 'Ingreso extra' : (catObj ? catObj.name : '');
