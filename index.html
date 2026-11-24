@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mis Finanzas" />
-  <title>Mis Finanzas - iPhone 13</title>
+  <title>Mis Finanzas Pro - iPhone</title>
   <style>
     :root {
       --bg: #f2f2f7;
@@ -33,7 +33,7 @@
       background: var(--bg);
       color: var(--text);
       padding-top: calc(var(--safe-top) + 12px);
-      padding-bottom: calc(var(--safe-bottom) + 90px);
+      padding-bottom: calc(var(--safe-bottom) + 92px);
       overscroll-behavior-y: none;
     }
 
@@ -47,15 +47,34 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       gap: 8px;
     }
 
     header h1 {
-      font-size: 26px;
+      font-size: 25px;
       font-weight: 700;
       margin: 0;
       letter-spacing: -0.5px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-pill-btn {
+      background: #e5e5ea;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
     }
 
     .month-nav {
@@ -64,13 +83,13 @@
       background: #e5e5ea;
       border-radius: 20px;
       padding: 3px;
-      gap: 2px;
+      gap: 1px;
     }
 
     .month-arrow {
       background: transparent;
       border: none;
-      width: 28px;
+      width: 26px;
       height: 28px;
       border-radius: 50%;
       font-size: 16px;
@@ -82,21 +101,17 @@
       cursor: pointer;
     }
 
-    .month-arrow:active {
-      background: rgba(0,0,0,0.08);
-    }
-
     .month-btn {
       background: transparent;
       border: none;
-      padding: 4px 8px;
+      padding: 4px 7px;
       font-size: 13px;
       font-weight: 600;
       color: #1c1c1e;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 3px;
     }
 
     .card {
@@ -139,6 +154,18 @@
       font-size: 34px;
       font-weight: 700;
       letter-spacing: -0.8px;
+      margin-bottom: 6px;
+    }
+
+    .daily-budget-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      color: #e5e5ea;
       margin-bottom: 14px;
     }
 
@@ -172,6 +199,36 @@
       text-underline-offset: 3px;
     }
 
+    .savings-status-bar {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #d1d1d6;
+      gap: 8px;
+    }
+
+    .savings-vault-row {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(52, 199, 89, 0.14);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: #e5e5ea;
+      cursor: pointer;
+    }
+
+    .savings-vault-row strong {
+      color: #34c759;
+      font-size: 13px;
+    }
+
     .section-title {
       font-size: 16px;
       font-weight: 700;
@@ -179,6 +236,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 6px;
+    }
+
+    .btn-group-mini {
+      display: flex;
+      gap: 6px;
     }
 
     .edit-limits-btn {
@@ -186,7 +249,7 @@
       color: var(--primary);
       border: none;
       border-radius: 10px;
-      padding: 5px 10px;
+      padding: 5px 9px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -203,8 +266,10 @@
     .cat-header {
       display: flex;
       justify-content: space-between;
+      align-items: baseline;
       font-size: 14px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      gap: 6px;
     }
 
     .cat-name {
@@ -214,6 +279,15 @@
     .cat-values {
       color: var(--subtext);
       font-size: 13px;
+      text-align: right;
+    }
+
+    .cat-submeta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--subtext);
+      margin-top: 4px;
     }
 
     .progress-bg {
@@ -229,29 +303,67 @@
       transition: width 0.3s ease;
     }
 
+    /* Buscador y filtros */
+    .filter-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #f2f2f7;
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 8px;
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #f9f9fb;
+      font-size: 13px;
+      color: var(--text);
+    }
+
     .tx-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 6px;
     }
 
     .tx-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 10px 4px;
       border-bottom: 1px solid var(--border);
+      border-radius: 10px;
     }
 
     .tx-item:last-child {
       border-bottom: none;
-      padding-bottom: 0;
+      padding-bottom: 2px;
     }
 
     .tx-left {
       display: flex;
       align-items: center;
       gap: 10px;
+      flex: 1;
+      min-width: 0;
+      cursor: pointer;
     }
 
     .tx-icon {
@@ -263,11 +375,19 @@
       align-items: center;
       justify-content: center;
       font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .tx-info {
+      min-width: 0;
     }
 
     .tx-title {
       font-size: 15px;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .tx-meta {
@@ -278,12 +398,14 @@
     .tx-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-shrink: 0;
     }
 
     .tx-amount {
       font-size: 15px;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .tx-amount.expense { color: var(--red); }
@@ -293,18 +415,19 @@
       background: none;
       border: none;
       color: #c7c7cc;
-      font-size: 18px;
-      padding: 4px;
+      font-size: 20px;
+      padding: 2px 6px;
       cursor: pointer;
     }
 
     .actions-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 8px;
+      margin-bottom: 10px;
     }
 
     .btn-secondary {
-      flex: 1;
       background: #e5e5ea;
       color: var(--text);
       border: none;
@@ -342,6 +465,29 @@
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(0, 122, 255, 0.35);
+    }
+
+    /* Quick amount chips */
+    .quick-chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .chip-btn {
+      background: #e5e5ea;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .chip-btn:active {
+      background: #d1d1d6;
     }
 
     /* Modal */
@@ -445,6 +591,12 @@
       color: var(--text);
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
     .month-grid-2 {
       display: grid;
       grid-template-columns: 1.4fr 1fr;
@@ -476,16 +628,52 @@
       text-align: left;
     }
 
-    .option-row:active {
-      background: #e5e5ea;
-    }
-
     .option-row span.sub {
       font-size: 12px;
       font-weight: 400;
       color: var(--subtext);
       display: block;
       margin-top: 2px;
+    }
+
+    .cat-manage-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f9f9fb;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+    }
+
+    .cat-manage-icon {
+      width: 44px;
+      text-align: center;
+      font-size: 18px;
+      padding: 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .cat-manage-name {
+      flex: 1;
+      font-size: 14px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+
+    .cat-manage-del {
+      background: #ffe5e5;
+      color: var(--red);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     .helper-text {
@@ -506,21 +694,25 @@
   <div class="container">
     <header>
       <h1>Mis Finanzas</h1>
-      <div class="month-nav">
-        <button type="button" class="month-arrow" onclick="stepMonth(-1)" title="Mes anterior">‹</button>
-        <button type="button" class="month-btn" onclick="openMonthModal()" title="Opciones de mes">
-          <span id="currentMonthLabel"></span>
-          <span>▾</span>
-        </button>
-        <button type="button" class="month-arrow" onclick="stepMonth(1)" title="Mes siguiente">›</button>
+      <div class="header-right">
+        <div class="month-nav">
+          <button type="button" class="month-arrow" onclick="stepMonth(-1)" title="Mes anterior">‹</button>
+          <button type="button" class="month-btn" onclick="openMonthModal()" title="Opciones de mes">
+            <span id="currentMonthLabel"></span>
+            <span>▾</span>
+          </button>
+          <button type="button" class="month-arrow" onclick="stepMonth(1)" title="Mes siguiente">›</button>
+        </div>
+        <button type="button" class="icon-pill-btn" onclick="openSettingsModal()" title="Ajustes y alertas">⚙️</button>
       </div>
     </header>
 
     <div class="card hero-balance">
       <div class="hero-top">
         <div>
-          <div class="hero-label">Disponible del mes</div>
-          <div class="hero-amount" id="availableAmount">$1,200.00</div>
+          <div class="hero-label">Disponible tras meta de ahorro</div>
+          <div class="hero-amount" id="availableAmount">$1,006.00</div>
+          <div class="daily-budget-pill" id="dailyBudgetPill">📅 Sugerido hoy: $0.00 / día</div>
         </div>
         <button type="button" class="edit-income-btn" onclick="openIncomeModal()">✏️ Ingreso base</button>
       </div>
@@ -533,17 +725,28 @@
           <span>Gastado</span>
           <strong id="totalExpenses">$0.00</strong>
         </div>
-        <div class="hero-stat">
-          <span>Meta ahorro</span>
+        <div class="hero-stat editable" onclick="openSavingsModal()" title="Toca para editar tu meta de ahorro">
+          <span>Meta ahorro ✎</span>
           <strong id="savingsGoal">$194.00</strong>
         </div>
+      </div>
+      <div class="savings-status-bar">
+        <span id="savingsProgressText">Saldo neto actual: $1,200.00</span>
+        <strong id="savingsStatusBadge">Meta cubierta</strong>
+      </div>
+      <div class="savings-vault-row" onclick="openVaultModal()" title="Toca para ver o ajustar tu fondo acumulado">
+        <span>🏦 Fondo acumulado total (todos los meses)</span>
+        <strong id="totalVaultAmount">$0.00 ✎</strong>
       </div>
     </div>
 
     <div class="card">
       <div class="section-title">
         <span>Límites por categoría</span>
-        <button type="button" class="edit-limits-btn" onclick="openLimitsModal()">✏️ Editar topes</button>
+        <div class="btn-group-mini">
+          <button type="button" class="edit-limits-btn" onclick="openCategoriesModal()">🗂️ Categorías</button>
+          <button type="button" class="edit-limits-btn" onclick="openLimitsModal()">✏️ Topes</button>
+        </div>
       </div>
       <div id="categoriesContainer"></div>
     </div>
@@ -551,26 +754,47 @@
     <div class="card">
       <div class="section-title">
         <span>Movimientos del mes</span>
+        <span id="txCountBadge" style="font-size:12px; color:var(--subtext); font-weight:600;">0 reg.</span>
       </div>
+
+      <div class="filter-bar">
+        <input type="search" id="searchInput" class="search-input" placeholder="🔍 Buscar por nota (ej. Uber, almuerzo)..." oninput="render()" />
+        <div class="filter-row">
+          <select id="filterTypeSelect" class="filter-select" onchange="render()">
+            <option value="all">Todos los tipos</option>
+            <option value="expense">Solo gastos</option>
+            <option value="income">Solo ingresos</option>
+          </select>
+          <select id="filterCatSelect" class="filter-select" onchange="render()">
+            <option value="all">Todas las categorías</option>
+          </select>
+        </div>
+      </div>
+
       <div class="tx-list" id="txList"></div>
     </div>
 
     <div class="actions-row">
-      <button type="button" class="btn-secondary" onclick="exportCSV()">Exportar Excel / CSV</button>
-      <button type="button" class="btn-secondary" onclick="resetMonth()">Reiniciar mes</button>
+      <button type="button" class="btn-secondary" onclick="exportCSV()">📊 Exportar CSV</button>
+      <button type="button" class="btn-secondary" onclick="exportBackupJSON()">💾 Respaldo JSON</button>
     </div>
+    <div class="actions-row">
+      <button type="button" class="btn-secondary" onclick="triggerImportJSON()">📥 Restaurar respaldo</button>
+      <button type="button" class="btn-secondary" onclick="resetMonth()">🗑️ Reiniciar mes</button>
+    </div>
+    <input type="file" id="importJsonInput" accept=".json,application/json" style="display:none;" onchange="importBackupJSON(event)" />
   </div>
 
   <div class="fab-bar">
-    <button type="button" class="fab-btn" onclick="openModal()">+ Registrar movimiento</button>
+    <button type="button" class="fab-btn" onclick="openModal(null)">+ Registrar movimiento</button>
   </div>
 
   <!-- Modal Opciones de Mes -->
-  <div class="modal-backdrop" id="monthModalBackdrop" onclick="closeMonthModalOnBackdrop(event)">
+  <div class="modal-backdrop" id="monthModalBackdrop" onclick="closeBackdrop(event, 'monthModalBackdrop')">
     <div class="modal-sheet">
       <div class="modal-header">
         <h2>Seleccionar mes y opciones</h2>
-        <button type="button" class="close-btn" onclick="closeMonthModal()">✕</button>
+        <button type="button" class="close-btn" onclick="closeModalById('monthModalBackdrop')">✕</button>
       </div>
 
       <div class="month-grid-2">
@@ -610,8 +834,8 @@
 
         <button type="button" class="option-row" onclick="copyBudgetFromPreviousMonth()">
           <div>
-            📋 Copiar ingreso y topes del mes anterior
-            <span class="sub">Trae tu sueldo y límites del mes previo a este mes</span>
+            📋 Copiar ingreso, meta y topes del mes anterior
+            <span class="sub">Trae tu sueldo, ahorro y límites del mes previo a este mes</span>
           </div>
           <span>›</span>
         </button>
@@ -627,12 +851,12 @@
     </div>
   </div>
 
-  <!-- Modal Registrar Movimiento -->
-  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModalOnBackdrop(event)">
+  <!-- Modal Registrar / Editar Movimiento -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeBackdrop(event, 'modalBackdrop')">
     <div class="modal-sheet">
       <div class="modal-header">
-        <h2>Nuevo movimiento</h2>
-        <button type="button" class="close-btn" onclick="closeModal()">✕</button>
+        <h2 id="txModalTitle">Nuevo movimiento</h2>
+        <button type="button" class="close-btn" onclick="closeModalById('modalBackdrop')">✕</button>
       </div>
 
       <div class="type-toggle">
@@ -641,14 +865,28 @@
       </div>
 
       <form onsubmit="saveTransaction(event)">
+        <input type="hidden" id="editingTxId" value="" />
         <div class="form-group">
           <label>Monto ($)</label>
-          <input type="number" inputmode="decimal" step="0.01" min="0.01" id="amountInput" class="form-control" placeholder="0.00" required />
+          <input type="text" inputmode="decimal" id="amountInput" class="form-control" placeholder="0.00" required />
+          <div class="quick-chips">
+            <button type="button" class="chip-btn" onclick="addQuickAmount(1)">+$1</button>
+            <button type="button" class="chip-btn" onclick="addQuickAmount(5)">+$5</button>
+            <button type="button" class="chip-btn" onclick="addQuickAmount(10)">+$10</button>
+            <button type="button" class="chip-btn" onclick="addQuickAmount(20)">+$20</button>
+            <button type="button" class="chip-btn" onclick="addQuickAmount(50)">+$50</button>
+          </div>
         </div>
 
-        <div class="form-group" id="categoryGroup">
-          <label>Categoría</label>
-          <select id="categoryInput" class="form-control"></select>
+        <div class="grid-2">
+          <div class="form-group" id="categoryGroup">
+            <label>Categoría</label>
+            <select id="categoryInput" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Fecha</label>
+            <input type="date" id="dateInput" class="form-control" required />
+          </div>
         </div>
 
         <div class="form-group">
@@ -656,24 +894,24 @@
           <input type="text" id="noteInput" class="form-control" placeholder="Ej. Almuerzo, Uber, Supermercado..." required />
         </div>
 
-        <button type="submit" class="fab-btn" style="margin-top:6px;">Guardar registro</button>
+        <button type="submit" class="fab-btn" id="txSubmitBtn" style="margin-top:6px;">Guardar registro</button>
       </form>
     </div>
   </div>
 
   <!-- Modal Editar Ingreso Mensual -->
-  <div class="modal-backdrop" id="incomeModalBackdrop" onclick="closeIncomeModalOnBackdrop(event)">
+  <div class="modal-backdrop" id="incomeModalBackdrop" onclick="closeBackdrop(event, 'incomeModalBackdrop')">
     <div class="modal-sheet">
       <div class="modal-header">
         <h2>Ingreso mensual</h2>
-        <button type="button" class="close-btn" onclick="closeIncomeModal()">✕</button>
+        <button type="button" class="close-btn" onclick="closeModalById('incomeModalBackdrop')">✕</button>
       </div>
 
       <form onsubmit="saveBaseIncome(event)">
         <div class="form-group">
           <label>Ingreso fijo del mes seleccionado ($)</label>
-          <input type="number" inputmode="decimal" step="0.01" min="0" id="baseIncomeInput" class="form-control" placeholder="1200.00" required />
-          <div class="helper-text">Aplica al mes activo y actualiza tu disponible y meta de ahorro.</div>
+          <input type="text" inputmode="decimal" id="baseIncomeInput" class="form-control" placeholder="1200.00" required />
+          <div class="helper-text">Admite decimales con punto o coma (ej. 1250.75).</div>
         </div>
 
         <button type="submit" class="fab-btn" style="margin-top:6px;">Actualizar ingreso</button>
@@ -681,24 +919,116 @@
     </div>
   </div>
 
+  <!-- Modal Editar Meta de Ahorro -->
+  <div class="modal-backdrop" id="savingsModalBackdrop" onclick="closeBackdrop(event, 'savingsModalBackdrop')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2>Meta de ahorro mensual</h2>
+        <button type="button" class="close-btn" onclick="closeModalById('savingsModalBackdrop')">✕</button>
+      </div>
+
+      <form onsubmit="saveSavingsGoal(event)">
+        <div class="form-group">
+          <label>¿Cuánto quieres ahorrar este mes? ($)</label>
+          <input type="text" inputmode="decimal" id="savingsGoalInput" class="form-control" placeholder="194.00" required />
+          <div class="helper-text">Se aparta de tu ingreso antes de calcular tu disponible diario y mensual.</div>
+        </div>
+
+        <button type="submit" class="fab-btn" style="margin-top:6px;">Guardar meta de ahorro</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Fondo Acumulado / Submetas -->
+  <div class="modal-backdrop" id="vaultModalBackdrop" onclick="closeBackdrop(event, 'vaultModalBackdrop')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2>Fondo de ahorro acumulado</h2>
+        <button type="button" class="close-btn" onclick="closeModalById('vaultModalBackdrop')">✕</button>
+      </div>
+
+      <form onsubmit="saveVaultSettings(event)">
+        <div class="form-group">
+          <label>Ahorro previo inicial antes de usar la app ($)</label>
+          <input type="text" inputmode="decimal" id="vaultInitialInput" class="form-control" placeholder="0.00" required />
+        </div>
+        <div class="form-group">
+          <label>Objetivo total del fondo (ej. Emergencias / Viaje) ($)</label>
+          <input type="text" inputmode="decimal" id="vaultTargetInput" class="form-control" placeholder="2000.00" required />
+          <div class="helper-text" id="vaultBreakdownHelper"></div>
+        </div>
+
+        <button type="submit" class="fab-btn" style="margin-top:6px;">Guardar fondo</button>
+      </form>
+    </div>
+  </div>
+
   <!-- Modal Editar Topes por Categoría -->
-  <div class="modal-backdrop" id="limitsModalBackdrop" onclick="closeLimitsModalOnBackdrop(event)">
+  <div class="modal-backdrop" id="limitsModalBackdrop" onclick="closeBackdrop(event, 'limitsModalBackdrop')">
     <div class="modal-sheet">
       <div class="modal-header">
         <h2>Topes por categoría</h2>
-        <button type="button" class="close-btn" onclick="closeLimitsModal()">✕</button>
+        <button type="button" class="close-btn" onclick="closeModalById('limitsModalBackdrop')">✕</button>
       </div>
 
       <form onsubmit="saveLimits(event)">
         <div id="limitsFieldsContainer"></div>
-        <div class="helper-text">Define el límite máximo mensual ($) para cada apartado.</div>
+        <div class="helper-text">Define el límite máximo mensual ($) para cada categoría (admite decimales).</div>
         <button type="submit" class="fab-btn" style="margin-top:12px;">Guardar topes</button>
       </form>
     </div>
   </div>
 
+  <!-- Modal Gestionar Categorías -->
+  <div class="modal-backdrop" id="categoriesModalBackdrop" onclick="closeBackdrop(event, 'categoriesModalBackdrop')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2>Gestionar categorías</h2>
+        <button type="button" class="close-btn" onclick="closeModalById('categoriesModalBackdrop')">✕</button>
+      </div>
+
+      <div id="manageCategoriesList"></div>
+
+      <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+        <label style="display:block; font-size:12px; font-weight:600; color:var(--subtext); margin-bottom:6px;">Nueva categoría</label>
+        <div style="display:flex; gap:8px; margin-bottom:10px;">
+          <input type="text" id="newCatIcon" class="cat-manage-icon" value="📦" maxlength="4" />
+          <input type="text" id="newCatName" class="cat-manage-name" placeholder="Nombre (ej. Salud, Mascotas)" />
+          <input type="text" inputmode="decimal" id="newCatLimit" class="cat-manage-name" style="max-width:90px;" placeholder="Tope $" />
+        </div>
+        <button type="button" class="btn-secondary" style="width:100%; margin-bottom:10px;" onclick="addNewCategory()">+ Agregar categoría</button>
+      </div>
+
+      <button type="button" class="fab-btn" onclick="saveCategoryChanges()">Guardar cambios</button>
+    </div>
+  </div>
+
+  <!-- Modal Ajustes y Alertas -->
+  <div class="modal-backdrop" id="settingsModalBackdrop" onclick="closeBackdrop(event, 'settingsModalBackdrop')">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h2>Alertas y preferencias</h2>
+        <button type="button" class="close-btn" onclick="closeModalById('settingsModalBackdrop')">✕</button>
+      </div>
+
+      <form onsubmit="saveAlertSettings(event)">
+        <div class="form-group">
+          <label>Aviso preventivo en barra de categoría (%)</label>
+          <input type="number" min="10" max="99" id="warnPctInput" class="form-control" value="80" required />
+          <div class="helper-text">La barra cambiará a naranja al alcanzar este porcentaje del tope (por defecto 80%).</div>
+        </div>
+        <div class="form-group">
+          <label>Alerta de límite alcanzado (%)</label>
+          <input type="number" min="50" max="150" id="dangerPctInput" class="form-control" value="100" required />
+          <div class="helper-text">La barra cambiará a rojo al alcanzar este porcentaje del tope (por defecto 100%).</div>
+        </div>
+        <button type="submit" class="fab-btn" style="margin-top:6px;">Guardar preferencias</button>
+      </form>
+    </div>
+  </div>
+
   <script>
-    const DEFAULT_CATEGORIES = [
+    const INITIAL_CATEGORIES = [
       { id: 'housing', name: 'Vivienda y servicios', icon: '🏠', limit: 363 },
       { id: 'groceries', name: 'Alimentación y súper', icon: '🛒', limit: 226 },
       { id: 'transport', name: 'Transporte y movilidad', icon: '🚕', limit: 53 },
@@ -711,13 +1041,24 @@
       'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
     ];
 
-    const STORAGE_KEY = 'mis_finanzas_iphone_v3';
+    const STORAGE_KEY = 'mis_finanzas_iphone_pro_v5';
+
+    function parseDecimal(raw) {
+      if (typeof raw === 'number') return isFinite(raw) ? raw : NaN;
+      if (!raw) return NaN;
+      const cleaned = String(raw).trim().replace(/\s+/g, '').replace(',', '.');
+      const val = parseFloat(cleaned);
+      return isFinite(val) ? val : NaN;
+    }
+
+    function getTodayISO() {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
 
     function getCurrentYYYYMM() {
       const now = new Date();
-      const y = now.getFullYear();
-      const m = String(now.getMonth() + 1).padStart(2, '0');
-      return `${y}-${m}`;
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
     }
 
     function getAdjacentYYYYMM(yyyymm, delta) {
@@ -726,25 +1067,45 @@
       return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
     }
 
+    function formatShortDate(isoOrStr) {
+      if (!isoOrStr) return '';
+      if (/^\d{4}-\d{2}-\d{2}$/.test(isoOrStr)) {
+        const [y, m, d] = isoOrStr.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
+        return dateObj.toLocaleDateString('es-EC', { day: '2-digit', month: 'short' });
+      }
+      return isoOrStr;
+    }
+
+    let rawSaved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    let state = {
+      selectedMonth: rawSaved.selectedMonth || getCurrentYYYYMM(),
+      categories: Array.isArray(rawSaved.categories) && rawSaved.categories.length > 0
+        ? rawSaved.categories
+        : JSON.parse(JSON.stringify(INITIAL_CATEGORIES)),
+      settings: {
+        warnPct: rawSaved.settings && typeof rawSaved.settings.warnPct === 'number' ? rawSaved.settings.warnPct : 80,
+        dangerPct: rawSaved.settings && typeof rawSaved.settings.dangerPct === 'number' ? rawSaved.settings.dangerPct : 100,
+        vaultInitial: rawSaved.settings && typeof rawSaved.settings.vaultInitial === 'number' ? rawSaved.settings.vaultInitial : 0,
+        vaultTarget: rawSaved.settings && typeof rawSaved.settings.vaultTarget === 'number' ? rawSaved.settings.vaultTarget : 2000
+      },
+      months: rawSaved.months && typeof rawSaved.months === 'object' ? rawSaved.months : {}
+    };
+
     function createMonthRecord(prevRecord) {
       const limits = {};
-      DEFAULT_CATEGORIES.forEach(c => {
+      state.categories.forEach(c => {
         limits[c.id] = prevRecord && prevRecord.limits && typeof prevRecord.limits[c.id] === 'number'
           ? prevRecord.limits[c.id]
           : c.limit;
       });
       return {
         baseIncome: prevRecord && typeof prevRecord.baseIncome === 'number' ? prevRecord.baseIncome : 1200,
+        savingsGoal: prevRecord && typeof prevRecord.savingsGoal === 'number' ? prevRecord.savingsGoal : 194,
         limits,
         transactions: []
       };
     }
-
-    let rawSaved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
-    let state = {
-      selectedMonth: rawSaved.selectedMonth || getCurrentYYYYMM(),
-      months: rawSaved.months && typeof rawSaved.months === 'object' ? rawSaved.months : {}
-    };
 
     if (!state.months[state.selectedMonth]) {
       state.months[state.selectedMonth] = createMonthRecord(null);
@@ -759,7 +1120,10 @@
         const source = state.months[prevKey] || (fallbackKeys.length ? state.months[fallbackKeys[fallbackKeys.length - 1]] : null);
         state.months[state.selectedMonth] = createMonthRecord(source);
       }
-      return state.months[state.selectedMonth];
+      const rec = state.months[state.selectedMonth];
+      if (typeof rec.savingsGoal !== 'number') rec.savingsGoal = 194;
+      if (!rec.limits) rec.limits = {};
+      return rec;
     }
 
     function getCategoryLimit(cat) {
@@ -784,6 +1148,15 @@
       render();
     }
 
+    function closeModalById(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function closeBackdrop(e, id) {
+      if (e.target.id === id) closeModalById(id);
+    }
+
+    /* Navegación de mes */
     function stepMonth(delta) {
       state.selectedMonth = getAdjacentYYYYMM(state.selectedMonth, delta);
       getActiveMonthData();
@@ -807,28 +1180,20 @@
       document.getElementById('monthModalBackdrop').classList.add('active');
     }
 
-    function closeMonthModal() {
-      document.getElementById('monthModalBackdrop').classList.remove('active');
-    }
-
-    function closeMonthModalOnBackdrop(e) {
-      if (e.target.id === 'monthModalBackdrop') closeMonthModal();
-    }
-
     function applySelectedMonthYear() {
       const m = document.getElementById('selectMonthNum').value;
       const y = document.getElementById('selectYearNum').value;
       state.selectedMonth = `${y}-${m}`;
       getActiveMonthData();
       saveState();
-      closeMonthModal();
+      closeModalById('monthModalBackdrop');
     }
 
     function goToCurrentMonth() {
       state.selectedMonth = getCurrentYYYYMM();
       getActiveMonthData();
       saveState();
-      closeMonthModal();
+      closeModalById('monthModalBackdrop');
     }
 
     function copyBudgetFromPreviousMonth() {
@@ -840,9 +1205,10 @@
       }
       const curData = getActiveMonthData();
       curData.baseIncome = prevData.baseIncome;
+      curData.savingsGoal = typeof prevData.savingsGoal === 'number' ? prevData.savingsGoal : 194;
       curData.limits = Object.assign({}, prevData.limits);
       saveState();
-      closeMonthModal();
+      closeModalById('monthModalBackdrop');
     }
 
     function duplicateRecurringExpenses() {
@@ -853,22 +1219,27 @@
         return;
       }
       const curData = getActiveMonthData();
+      const defaultDate = `${state.selectedMonth}-01`;
       const cloned = prevData.transactions.map((t, idx) => ({
         ...t,
         id: Date.now() + idx,
-        date: 'Copiado'
+        dateISO: defaultDate
       }));
       curData.transactions = cloned.concat(curData.transactions);
       saveState();
-      closeMonthModal();
+      closeModalById('monthModalBackdrop');
     }
 
-    function populateCategorySelect() {
+    /* Modal Movimiento (Crear / Editar) */
+    function populateCategorySelect(selectedId) {
       const select = document.getElementById('categoryInput');
-      select.innerHTML = DEFAULT_CATEGORIES.map(cat => {
+      select.innerHTML = state.categories.map(cat => {
         const lim = getCategoryLimit(cat);
         return `<option value="${cat.id}">${cat.icon} ${cat.name} (${formatMoney(lim)})</option>`;
       }).join('');
+      if (selectedId && state.categories.some(c => c.id === selectedId)) {
+        select.value = selectedId;
+      }
     }
 
     function setType(type) {
@@ -878,23 +1249,97 @@
       document.getElementById('categoryGroup').style.display = type === 'expense' ? 'block' : 'none';
     }
 
-    function openModal() {
-      populateCategorySelect();
+    function addQuickAmount(delta) {
+      const inp = document.getElementById('amountInput');
+      const cur = parseDecimal(inp.value);
+      const next = (isNaN(cur) ? 0 : cur) + delta;
+      inp.value = next.toFixed(2);
+    }
+
+    function openModal(txId) {
+      const mData = getActiveMonthData();
+      const editingTx = txId ? mData.transactions.find(t => t.id === txId) : null;
+
+      populateCategorySelect(editingTx ? editingTx.category : null);
+
+      if (editingTx) {
+        document.getElementById('txModalTitle').textContent = 'Editar movimiento';
+        document.getElementById('txSubmitBtn').textContent = 'Actualizar registro';
+        document.getElementById('editingTxId').value = String(editingTx.id);
+        setType(editingTx.type);
+        document.getElementById('amountInput').value = editingTx.amount;
+        document.getElementById('noteInput').value = editingTx.note;
+        document.getElementById('dateInput').value = editingTx.dateISO || `${state.selectedMonth}-01`;
+      } else {
+        document.getElementById('txModalTitle').textContent = 'Nuevo movimiento';
+        document.getElementById('txSubmitBtn').textContent = 'Guardar registro';
+        document.getElementById('editingTxId').value = '';
+        setType('expense');
+        document.getElementById('amountInput').value = '';
+        document.getElementById('noteInput').value = '';
+        const today = getTodayISO();
+        document.getElementById('dateInput').value = today.startsWith(state.selectedMonth)
+          ? today
+          : `${state.selectedMonth}-01`;
+      }
+
       document.getElementById('modalBackdrop').classList.add('active');
-      setTimeout(() => document.getElementById('amountInput').focus(), 100);
+      if (!editingTx) {
+        setTimeout(() => document.getElementById('amountInput').focus(), 100);
+      }
     }
 
-    function closeModal() {
-      document.getElementById('modalBackdrop').classList.remove('active');
-      document.getElementById('amountInput').value = '';
-      document.getElementById('noteInput').value = '';
-      setType('expense');
+    function saveTransaction(e) {
+      e.preventDefault();
+      const amount = parseDecimal(document.getElementById('amountInput').value);
+      const category = document.getElementById('categoryInput').value;
+      const note = document.getElementById('noteInput').value.trim();
+      const dateISO = document.getElementById('dateInput').value;
+      const editingIdRaw = document.getElementById('editingTxId').value;
+
+      if (isNaN(amount) || amount <= 0 || !note) {
+        alert('Ingresa un monto mayor a 0 y una descripción.');
+        return;
+      }
+
+      const mData = getActiveMonthData();
+      const cleanAmount = Math.round(amount * 100) / 100;
+
+      if (editingIdRaw) {
+        const targetId = Number(editingIdRaw);
+        const idx = mData.transactions.findIndex(t => t.id === targetId);
+        if (idx !== -1) {
+          mData.transactions[idx] = {
+            ...mData.transactions[idx],
+            type: currentType,
+            amount: cleanAmount,
+            category: currentType === 'expense' ? category : 'income',
+            note,
+            dateISO
+          };
+        }
+      } else {
+        mData.transactions.unshift({
+          id: Date.now(),
+          type: currentType,
+          amount: cleanAmount,
+          category: currentType === 'expense' ? category : 'income',
+          note,
+          dateISO
+        });
+      }
+
+      saveState();
+      closeModalById('modalBackdrop');
     }
 
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'modalBackdrop') closeModal();
+    function deleteTransaction(id) {
+      const mData = getActiveMonthData();
+      mData.transactions = mData.transactions.filter(t => t.id !== id);
+      saveState();
     }
 
+    /* Ingreso y Meta de Ahorro */
     function openIncomeModal() {
       const mData = getActiveMonthData();
       document.getElementById('baseIncomeInput').value = mData.baseIncome;
@@ -906,90 +1351,205 @@
       }, 100);
     }
 
-    function closeIncomeModal() {
-      document.getElementById('incomeModalBackdrop').classList.remove('active');
-    }
-
-    function closeIncomeModalOnBackdrop(e) {
-      if (e.target.id === 'incomeModalBackdrop') closeIncomeModal();
-    }
-
     function saveBaseIncome(e) {
       e.preventDefault();
-      const val = parseFloat(document.getElementById('baseIncomeInput').value);
-      if (isNaN(val) || val < 0) return;
-      getActiveMonthData().baseIncome = val;
+      const val = parseDecimal(document.getElementById('baseIncomeInput').value);
+      if (isNaN(val) || val < 0) {
+        alert('Ingresa un monto válido.');
+        return;
+      }
+      getActiveMonthData().baseIncome = Math.round(val * 100) / 100;
       saveState();
-      closeIncomeModal();
+      closeModalById('incomeModalBackdrop');
     }
 
+    function openSavingsModal() {
+      const mData = getActiveMonthData();
+      document.getElementById('savingsGoalInput').value = mData.savingsGoal;
+      document.getElementById('savingsModalBackdrop').classList.add('active');
+      setTimeout(() => {
+        const input = document.getElementById('savingsGoalInput');
+        input.focus();
+        input.select();
+      }, 100);
+    }
+
+    function saveSavingsGoal(e) {
+      e.preventDefault();
+      const val = parseDecimal(document.getElementById('savingsGoalInput').value);
+      if (isNaN(val) || val < 0) {
+        alert('Ingresa una meta de ahorro válida.');
+        return;
+      }
+      getActiveMonthData().savingsGoal = Math.round(val * 100) / 100;
+      saveState();
+      closeModalById('savingsModalBackdrop');
+    }
+
+    /* Fondo acumulado */
+    function calculateAccumulatedSavings() {
+      let monthlySavedSum = 0;
+      Object.keys(state.months).forEach(k => {
+        const md = state.months[k];
+        if (!md) return;
+        const inc = (md.baseIncome || 0) + (md.transactions || []).filter(t => t.type === 'income').reduce((s, t) => s + t.amount, 0);
+        const exp = (md.transactions || []).filter(t => t.type === 'expense').reduce((s, t) => s + t.amount, 0);
+        const net = inc - exp;
+        if (net > 0) monthlySavedSum += net;
+      });
+      return {
+        monthlySavedSum,
+        totalVault: (state.settings.vaultInitial || 0) + monthlySavedSum
+      };
+    }
+
+    function openVaultModal() {
+      const vaultInfo = calculateAccumulatedSavings();
+      document.getElementById('vaultInitialInput').value = state.settings.vaultInitial || 0;
+      document.getElementById('vaultTargetInput').value = state.settings.vaultTarget || 2000;
+      document.getElementById('vaultBreakdownHelper').textContent =
+        `Saldo positivo acumulado entre tus meses registrados: ${formatMoney(vaultInfo.monthlySavedSum)}.`;
+      document.getElementById('vaultModalBackdrop').classList.add('active');
+    }
+
+    function saveVaultSettings(e) {
+      e.preventDefault();
+      const initVal = parseDecimal(document.getElementById('vaultInitialInput').value);
+      const targetVal = parseDecimal(document.getElementById('vaultTargetInput').value);
+      if (isNaN(initVal) || initVal < 0 || isNaN(targetVal) || targetVal <= 0) {
+        alert('Ingresa valores numéricos válidos.');
+        return;
+      }
+      state.settings.vaultInitial = Math.round(initVal * 100) / 100;
+      state.settings.vaultTarget = Math.round(targetVal * 100) / 100;
+      saveState();
+      closeModalById('vaultModalBackdrop');
+    }
+
+    /* Topes y Categorías */
     function openLimitsModal() {
       const container = document.getElementById('limitsFieldsContainer');
-      container.innerHTML = DEFAULT_CATEGORIES.map(cat => {
+      container.innerHTML = state.categories.map(cat => {
         const currentLim = getCategoryLimit(cat);
         return `
           <div class="form-group">
             <label>${cat.icon} ${cat.name} ($)</label>
-            <input type="number" inputmode="decimal" step="0.01" min="0" data-cat-id="${cat.id}" class="form-control limit-input" value="${currentLim}" required />
+            <input type="text" inputmode="decimal" data-cat-id="${cat.id}" class="form-control limit-input" value="${currentLim}" required />
           </div>
         `;
       }).join('');
       document.getElementById('limitsModalBackdrop').classList.add('active');
     }
 
-    function closeLimitsModal() {
-      document.getElementById('limitsModalBackdrop').classList.remove('active');
-    }
-
-    function closeLimitsModalOnBackdrop(e) {
-      if (e.target.id === 'limitsModalBackdrop') closeLimitsModal();
-    }
-
     function saveLimits(e) {
       e.preventDefault();
       const mData = getActiveMonthData();
       if (!mData.limits) mData.limits = {};
+      let hasError = false;
       document.querySelectorAll('.limit-input').forEach(inp => {
         const id = inp.getAttribute('data-cat-id');
-        const val = parseFloat(inp.value);
-        if (!isNaN(val) && val >= 0) {
-          mData.limits[id] = val;
+        const val = parseDecimal(inp.value);
+        if (isNaN(val) || val < 0) {
+          hasError = true;
+        } else {
+          mData.limits[id] = Math.round(val * 100) / 100;
+        }
+      });
+      if (hasError) {
+        alert('Revisa que todos los topes tengan números válidos.');
+        return;
+      }
+      saveState();
+      closeModalById('limitsModalBackdrop');
+    }
+
+    function openCategoriesModal() {
+      renderManageCategoriesList();
+      document.getElementById('categoriesModalBackdrop').classList.add('active');
+    }
+
+    function renderManageCategoriesList() {
+      const container = document.getElementById('manageCategoriesList');
+      container.innerHTML = state.categories.map(cat => `
+        <div class="cat-manage-row" data-cat-id="${cat.id}">
+          <input type="text" class="cat-manage-icon edit-cat-icon" value="${cat.icon}" maxlength="4" />
+          <input type="text" class="cat-manage-name edit-cat-name" value="${cat.name}" />
+          <button type="button" class="cat-manage-del" onclick="removeCategory('${cat.id}')" title="Eliminar">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeCategory(id) {
+      if (state.categories.length <= 1) {
+        alert('Debe existir al menos una categoría.');
+        return;
+      }
+      if (confirm('¿Eliminar esta categoría? Los gastos previos conservarán su descripción.')) {
+        state.categories = state.categories.filter(c => c.id !== id);
+        renderManageCategoriesList();
+      }
+    }
+
+    function addNewCategory() {
+      const icon = document.getElementById('newCatIcon').value.trim() || '📦';
+      const name = document.getElementById('newCatName').value.trim();
+      const limRaw = parseDecimal(document.getElementById('newCatLimit').value);
+      const limit = !isNaN(limRaw) && limRaw >= 0 ? Math.round(limRaw * 100) / 100 : 100;
+
+      if (!name) {
+        alert('Escribe un nombre para la nueva categoría.');
+        return;
+      }
+
+      const newId = 'cat_' + Date.now();
+      state.categories.push({ id: newId, name, icon, limit });
+      getActiveMonthData().limits[newId] = limit;
+
+      document.getElementById('newCatName').value = '';
+      document.getElementById('newCatLimit').value = '';
+      renderManageCategoriesList();
+    }
+
+    function saveCategoryChanges() {
+      const rows = document.querySelectorAll('#manageCategoriesList .cat-manage-row');
+      rows.forEach(row => {
+        const id = row.getAttribute('data-cat-id');
+        const iconVal = row.querySelector('.edit-cat-icon').value.trim() || '📦';
+        const nameVal = row.querySelector('.edit-cat-name').value.trim();
+        const cat = state.categories.find(c => c.id === id);
+        if (cat && nameVal) {
+          cat.icon = iconVal;
+          cat.name = nameVal;
         }
       });
       saveState();
-      closeLimitsModal();
+      closeModalById('categoriesModalBackdrop');
     }
 
-    function saveTransaction(e) {
+    /* Ajustes de Alertas */
+    function openSettingsModal() {
+      document.getElementById('warnPctInput').value = state.settings.warnPct;
+      document.getElementById('dangerPctInput').value = state.settings.dangerPct;
+      document.getElementById('settingsModalBackdrop').classList.add('active');
+    }
+
+    function saveAlertSettings(e) {
       e.preventDefault();
-      const amount = parseFloat(document.getElementById('amountInput').value);
-      const category = document.getElementById('categoryInput').value;
-      const note = document.getElementById('noteInput').value.trim();
-
-      if (!amount || amount <= 0 || !note) return;
-
-      const mData = getActiveMonthData();
-      mData.transactions.unshift({
-        id: Date.now(),
-        type: currentType,
-        amount,
-        category: currentType === 'expense' ? category : 'income',
-        note,
-        date: new Date().toLocaleDateString('es-EC', { day: '2-digit', month: 'short' })
-      });
-
+      const w = parseInt(document.getElementById('warnPctInput').value, 10);
+      const d = parseInt(document.getElementById('dangerPctInput').value, 10);
+      if (isNaN(w) || isNaN(d) || w >= d) {
+        alert('El porcentaje preventivo debe ser menor que el porcentaje de alerta.');
+        return;
+      }
+      state.settings.warnPct = w;
+      state.settings.dangerPct = d;
       saveState();
-      closeModal();
+      closeModalById('settingsModalBackdrop');
     }
 
-    function deleteTransaction(id) {
-      const mData = getActiveMonthData();
-      mData.transactions = mData.transactions.filter(t => t.id !== id);
-      saveState();
-    }
-
+    /* Exportar / Importar / Reiniciar */
     function resetMonth() {
-      if (confirm('¿Seguro que deseas borrar los movimientos del mes seleccionado? (Se conservan tu ingreso y topes)')) {
+      if (confirm('¿Seguro que deseas borrar los movimientos del mes seleccionado? (Se conservan tu ingreso, meta de ahorro y topes)')) {
         getActiveMonthData().transactions = [];
         saveState();
       }
@@ -1003,9 +1563,10 @@
       }
       const headers = ['Mes,Fecha,Tipo,Categoria,Descripcion,Monto'];
       const rows = mData.transactions.map(t => {
-        const catObj = DEFAULT_CATEGORIES.find(c => c.id === t.category);
+        const catObj = state.categories.find(c => c.id === t.category);
         const catName = t.type === 'income' ? 'Ingreso' : (catObj ? catObj.name : t.category);
-        return `"${state.selectedMonth}","${t.date}","${t.type === 'income' ? 'Ingreso' : 'Gasto'}","${catName}","${t.note.replace(/"/g, '""')}",${t.amount}`;
+        const dStr = t.dateISO || t.date || '';
+        return `"${state.selectedMonth}","${dStr}","${t.type === 'income' ? 'Ingreso' : 'Gasto'}","${catName}","${t.note.replace(/"/g, '""')}",${t.amount.toFixed(2)}`;
       });
       const blob = new Blob([headers.concat(rows).join('\n')], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -1014,6 +1575,64 @@
       a.download = `mis_finanzas_${state.selectedMonth}.csv`;
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    function exportBackupJSON() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `respaldo_mis_finanzas_${getTodayISO()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function triggerImportJSON() {
+      document.getElementById('importJsonInput').click();
+    }
+
+    function importBackupJSON(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (!parsed || typeof parsed !== 'object' || !parsed.months) {
+            alert('El archivo seleccionado no es un respaldo válido.');
+            return;
+          }
+          if (confirm('¿Restaurar este respaldo? Reemplazará los datos actuales en este dispositivo.')) {
+            state = parsed;
+            saveState();
+            alert('Respaldo restaurado correctamente.');
+          }
+        } catch (err) {
+          alert('No se pudo leer el archivo JSON.');
+        }
+        e.target.value = '';
+      };
+      reader.readAsText(file);
+    }
+
+    /* Cálculo de presupuesto diario sugerido */
+    function computeDailyBudgetText(available) {
+      const currentYM = getCurrentYYYYMM();
+      if (state.selectedMonth < currentYM) {
+        return '📅 Mes cerrado · Balance final';
+      }
+      const [y, m] = state.selectedMonth.split('-').map(Number);
+      const daysInMonth = new Date(y, m, 0).getDate();
+      let remainingDays = daysInMonth;
+      if (state.selectedMonth === currentYM) {
+        const todayDay = new Date().getDate();
+        remainingDays = Math.max(1, (daysInMonth - todayDay) + 1);
+      }
+      const perDay = available / remainingDays;
+      if (available <= 0) {
+        return `⚠️ Sin margen diario (${remainingDays} días rest.)`;
+      }
+      return `📅 Sugerido: ${formatMoney(perDay)} / día (${remainingDays} días rest.)`;
     }
 
     function render() {
@@ -1029,9 +1648,9 @@
         .reduce((sum, t) => sum + t.amount, 0);
 
       const totalIncome = mData.baseIncome + extraIncome;
-      const available = totalIncome - totalExpenses;
-      const totalBudgetedExpenses = DEFAULT_CATEGORIES.reduce((sum, c) => sum + getCategoryLimit(c), 0);
-      const savingsGoal = Math.max(0, totalIncome - totalBudgetedExpenses);
+      const savingsGoal = mData.savingsGoal;
+      const available = totalIncome - totalExpenses - savingsGoal;
+      const currentNetSurplus = totalIncome - totalExpenses;
 
       document.getElementById('totalIncome').textContent = formatMoney(totalIncome);
       document.getElementById('totalExpenses').textContent = formatMoney(totalExpenses);
@@ -1041,17 +1660,43 @@
       availEl.textContent = formatMoney(available);
       availEl.style.color = available < 0 ? '#ff453a' : '#ffffff';
 
-      // Categorías
+      document.getElementById('dailyBudgetPill').textContent = computeDailyBudgetText(available);
+
+      document.getElementById('savingsProgressText').textContent = `Saldo neto actual: ${formatMoney(currentNetSurplus)}`;
+      const badgeEl = document.getElementById('savingsStatusBadge');
+      if (currentNetSurplus >= savingsGoal) {
+        badgeEl.textContent = 'Meta cubierta';
+        badgeEl.style.color = '#34c759';
+      } else {
+        badgeEl.textContent = `Faltan ${formatMoney(savingsGoal - currentNetSurplus)}`;
+        badgeEl.style.color = '#ff9500';
+      }
+
+      const vaultInfo = calculateAccumulatedSavings();
+      const vaultPct = state.settings.vaultTarget > 0
+        ? Math.round((vaultInfo.totalVault / state.settings.vaultTarget) * 100)
+        : 0;
+      document.getElementById('totalVaultAmount').textContent =
+        `${formatMoney(vaultInfo.totalVault)} (${vaultPct}%) ✎`;
+
+      // Categorías con porcentaje de participación y restante
       const catContainer = document.getElementById('categoriesContainer');
-      catContainer.innerHTML = DEFAULT_CATEGORIES.map(cat => {
+      catContainer.innerHTML = state.categories.map(cat => {
         const limit = getCategoryLimit(cat);
         const spent = mData.transactions
           .filter(t => t.type === 'expense' && t.category === cat.id)
           .reduce((sum, t) => sum + t.amount, 0);
         const pct = limit > 0 ? Math.min(100, Math.round((spent / limit) * 100)) : (spent > 0 ? 100 : 0);
+        const shareOfExpenses = totalExpenses > 0 ? Math.round((spent / totalExpenses) * 100) : 0;
+        const remainingCat = limit - spent;
+
         let barColor = 'var(--green)';
-        if (pct >= 100) barColor = 'var(--red)';
-        else if (pct >= 80) barColor = 'var(--orange)';
+        if (pct >= state.settings.dangerPct) barColor = 'var(--red)';
+        else if (pct >= state.settings.warnPct) barColor = 'var(--orange)';
+
+        const remainingLabel = remainingCat >= 0
+          ? `Quedan ${formatMoney(remainingCat)}`
+          : `Excedido por ${formatMoney(Math.abs(remainingCat))}`;
 
         return `
           <div class="cat-item">
@@ -1062,32 +1707,61 @@
             <div class="progress-bg">
               <div class="progress-fill" style="width:${pct}%; background:${barColor};"></div>
             </div>
+            <div class="cat-submeta">
+              <span>${shareOfExpenses}% del gasto total</span>
+              <span style="color:${remainingCat < 0 ? 'var(--red)' : 'var(--subtext)'}; font-weight:${remainingCat < 0 ? '600' : '400'};">${remainingLabel}</span>
+            </div>
           </div>
         `;
       }).join('');
 
-      // Movimientos
+      // Actualizar filtro de categorías manteniendo selección
+      const filterCatEl = document.getElementById('filterCatSelect');
+      const prevFilterCat = filterCatEl.value;
+      filterCatEl.innerHTML = '<option value="all">Todas las categorías</option>' +
+        state.categories.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+      if (state.categories.some(c => c.id === prevFilterCat)) {
+        filterCatEl.value = prevFilterCat;
+      }
+
+      // Filtrado y búsqueda de movimientos
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      const filterType = document.getElementById('filterTypeSelect').value;
+      const filterCat = filterCatEl.value;
+
+      const filteredTx = mData.transactions.filter(t => {
+        if (filterType !== 'all' && t.type !== filterType) return false;
+        if (filterCat !== 'all' && t.category !== filterCat) return false;
+        if (query && !t.note.toLowerCase().includes(query)) return false;
+        return true;
+      });
+
+      document.getElementById('txCountBadge').textContent = `${filteredTx.length} de ${mData.transactions.length}`;
+
       const txList = document.getElementById('txList');
-      if (mData.transactions.length === 0) {
-        txList.innerHTML = '<div class="empty-state">No hay movimientos en este mes.<br>Toca <strong>+ Registrar movimiento</strong> para empezar.</div>';
+      if (filteredTx.length === 0) {
+        txList.innerHTML = mData.transactions.length === 0
+          ? '<div class="empty-state">No hay movimientos en este mes.<br>Toca <strong>+ Registrar movimiento</strong> para empezar.</div>'
+          : '<div class="empty-state">No hay movimientos que coincidan con tu búsqueda o filtro.</div>';
       } else {
-        txList.innerHTML = mData.transactions.map(t => {
-          const catObj = DEFAULT_CATEGORIES.find(c => c.id === t.category);
+        txList.innerHTML = filteredTx.map(t => {
+          const catObj = state.categories.find(c => c.id === t.category);
           const icon = t.type === 'income' ? '💰' : (catObj ? catObj.icon : '💸');
-          const catLabel = t.type === 'income' ? 'Ingreso extra' : (catObj ? catObj.name : '');
+          const catLabel = t.type === 'income' ? 'Ingreso extra' : (catObj ? catObj.name : 'Sin categoría');
           const sign = t.type === 'income' ? '+' : '-';
+          const dateText = formatShortDate(t.dateISO || t.date);
 
           return `
             <div class="tx-item">
-              <div class="tx-left">
+              <div class="tx-left" onclick="openModal(${t.id})" title="Toca para editar">
                 <div class="tx-icon">${icon}</div>
-                <div>
+                <div class="tx-info">
                   <div class="tx-title">${t.note}</div>
-                  <div class="tx-meta">${catLabel} · ${t.date}</div>
+                  <div class="tx-meta">${catLabel} · ${dateText} ✎</div>
                 </div>
               </div>
               <div class="tx-right">
-                <span class="tx-amount ${t.type}">${sign}${formatMoney(t.amount)}</span>
+                <span class="tx-amount ${t.type}" onclick="openModal(${t.id})">${sign}${formatMoney(t.amount)}</span>
                 <button type="button" class="del-btn" onclick="deleteTransaction(${t.id})" title="Eliminar">×</button>
               </div>
             </div>
